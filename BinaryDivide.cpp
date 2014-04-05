@@ -34,8 +34,9 @@ double binaryDivide(double a,double b,double tol){
 		}
 
 	}
-	return result;
 	cout << "二分法求根结束：" << endl;
+	return result;
+	
 }
 
 double binaryDivide(double a, double b, double tol, double(*function)(double)){
@@ -66,6 +67,7 @@ double binaryDivide(double a, double b, double tol, double(*function)(double)){
 		}
 	}
 
-	return result;
 	cout << "二分法求根结束:" << endl;
+	return result;
+	
 }
