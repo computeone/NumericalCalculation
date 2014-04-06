@@ -78,11 +78,13 @@
   <ItemGroup>
     <ClInclude Include="BinaryDivide.h" />
     <ClInclude Include="FixedIterator.h" />
+    <ClInclude Include="NewTonIterator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BinaryDivide.cpp" />
     <ClCompile Include="FixedIterator.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NewTonIterator.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
