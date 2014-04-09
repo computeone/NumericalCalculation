@@ -25,7 +25,6 @@ double NewTonIterator(double p0,double p1, double tol,int n){
 	}
 	cout << "Å£¶Ùµü´ú·¨Ê§°Ü£¡" << endl;
 }
-
 double NewTonIterator(double p0, double p1, double tol, int n, double(*function)(double)){
 	double q0 = function(p0);
 	double q1 = function(p1);

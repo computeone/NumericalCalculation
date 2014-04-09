@@ -1,14 +1,16 @@
-﻿生成启动时间为 4/6/2014 8:07:48 PM。
+﻿生成启动时间为 4/6/2014 8:11:34 PM。
      1>项目“D:\C++\WorkSpace\SunSystem\CNumericalCalculation\CNumericalCalculation.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt NewTonIterator.cpp
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt NewTonIterator.cpp main.cpp
+         main.cpp
+     1>d:\c++\workspace\sunsystem\cnumericalcalculation\main.cpp(10): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
          NewTonIterator.cpp
-     1>d:\c++\workspace\sunsystem\cnumericalcalculation\newtoniterator.cpp(13): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
-     1>d:\c++\workspace\sunsystem\cnumericalcalculation\newtoniterator.cpp(20): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
-     1>d:\c++\workspace\sunsystem\cnumericalcalculation\newtoniterator.cpp(21): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
-     1>d:\c++\workspace\sunsystem\cnumericalcalculation\newtoniterator.cpp(37): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
-     1>d:\c++\workspace\sunsystem\cnumericalcalculation\newtoniterator.cpp(63): warning C4715: “NewTonIterator”: 不是所有的控件路径都返回值
-     1>d:\c++\workspace\sunsystem\cnumericalcalculation\newtoniterator.cpp(41): warning C4715: “NewTonIterator”: 不是所有的控件路径都返回值
+     1>d:\c++\workspace\sunsystem\cnumericalcalculation\newtoniterator.cpp(6): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+     1>d:\c++\workspace\sunsystem\cnumericalcalculation\newtoniterator.cpp(7): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+     1>d:\c++\workspace\sunsystem\cnumericalcalculation\newtoniterator.cpp(23): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+         正在生成代码...
+     1>d:\c++\workspace\sunsystem\cnumericalcalculation\newtoniterator.cpp(27): warning C4715: “NewTonIterator”: 不是所有的控件路径都返回值
+     1>d:\c++\workspace\sunsystem\cnumericalcalculation\newtoniterator.cpp(48): warning C4715: “NewTonIterator”: 不是所有的控件路径都返回值
        Link:
          D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\C++\WorkSpace\SunSystem\Debug\CNumericalCalculation.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\C++\WorkSpace\SunSystem\Debug\CNumericalCalculation.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\C++\WorkSpace\SunSystem\Debug\CNumericalCalculation.lib" /MACHINE:X86 Debug\BinaryDivide.obj
          Debug\FixedIterator.obj
@@ -19,4 +21,4 @@
 
 生成成功。
 
-已用时间 00:00:01.49
+已用时间 00:00:02.24

@@ -22,6 +22,5 @@ void testNewTonIterator(){
 int main(){
 	testFixedIterator();
 	testNewTonIterator();
-	generate(15);
 
 }
