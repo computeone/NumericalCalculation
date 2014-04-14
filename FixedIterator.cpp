@@ -31,7 +31,7 @@ double fixedIterator(double p0, double tol,int N, double(*function)(double p)){
 		p = function(p0);
 		cout << setprecision(16)<<"p:" << endl << endl;
 		if (fabs(p - p0) < tol){
-			cout << "不 动点迭代结束：" << endl;
+			cout << "不动点迭代结束：" << endl;
 		}
 		p0 = p;
 	}

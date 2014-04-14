@@ -24,6 +24,15 @@
     <ClInclude Include="NewTonIterator.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Steffensen.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Horner.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Interpolation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BinaryDivide.cpp">
@@ -36,6 +45,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="NewTonIterator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Steffensen.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Horner.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Interpolation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

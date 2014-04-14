@@ -1,6 +1,8 @@
 #include "BinaryDivide.h"
 #include "FixedIterator.h"
 #include "NewTonIterator.h"
+#include "Steffensen.h"
+#include "Horner.h"
 #include <iostream>
 #include <algorithm>
 
@@ -19,8 +21,17 @@ void testFixedIterator(){
 void testNewTonIterator(){
 	cout << "根为:" << NewTonIterator(0.5, 3.1415926/4.0,0.000001,10,test) << endl;
 }
+void testSteffense(){
+	cout << "根为：" << Steffensen(1.5, 0.00000001, 10) << endl;
+}
+void testHorner(){
+	cout << "根为:" <<Horner(-2).second << endl;
+	cout << "Muller根为:" << Muller(0.5, 1.0, 1.5, 0.00001, 10, testMuller) << endl;
+}
+
 int main(){
 	testFixedIterator();
 	testNewTonIterator();
-
+	testSteffense();
+	testHorner();
 }
