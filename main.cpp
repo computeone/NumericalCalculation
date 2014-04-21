@@ -3,6 +3,7 @@
 #include "NewTonIterator.h"
 #include "Steffensen.h"
 #include "Horner.h"
+#include "Interpolation.h"
 #include <iostream>
 #include <algorithm>
 
@@ -28,10 +29,44 @@ void testHorner(){
 	cout << "根为:" <<Horner(-2).second << endl;
 	cout << "Muller根为:" << Muller(0.5, 1.0, 1.5, 0.00001, 10, testMuller) << endl;
 }
+void testdivideNewton(){
+	cout << "n项差商系数：" << endl;
+	vector<double> xn;
+	xn.push_back(1.0);
+	xn.push_back(1.3);
+	xn.push_back(1.6);
+	xn.push_back(1.9);
+	xn.push_back(2.2);
+	vector<double> fx;
+	fx.push_back(0.7651977);
+	fx.push_back(0.6200860);
+	fx.push_back(0.4554022);
+	fx.push_back(0.2818186);
+	fx.push_back(0.1103623);
 
-int main(){
-	testFixedIterator();
-	testNewTonIterator();
-	testSteffense();
-	testHorner();
+	cout << divideNewton(xn,fx)<< endl;
+}
+void testNeville(){
+	cout << "表为:" << endl;
+	vector<double> xn;
+	xn.push_back(1.0);
+	xn.push_back(1.3);
+	xn.push_back(1.6);
+	xn.push_back(1.9);
+	xn.push_back(2.2);
+	vector<double> fx;
+	fx.push_back(0.7651977);
+	fx.push_back(0.6200860);
+	fx.push_back(0.4554022);
+	fx.push_back(0.2818186);
+	fx.push_back(0.1103623);
+	cout << Neville(1.5, xn, fx)[4][4] << endl;
+}
+int main(int argc,char** argv){
+	//testFixedIterator();
+	//testNewTonIterator();
+	//testSteffense();
+	//testHorner();
+	testNeville();
+	testdivideNewton();
 }
