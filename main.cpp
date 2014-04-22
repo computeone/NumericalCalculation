@@ -62,11 +62,29 @@ void testNeville(){
 	fx.push_back(0.1103623);
 	cout << Neville(1.5, xn, fx)[4][4] << endl;
 }
+
+void testHermite(){
+	vector<double> xn;
+	vector<double> fx;
+	vector<double> fxx;
+	xn.push_back(8.3);
+	xn.push_back(8.6);
+	fx.push_back(17.56492);
+	fx.push_back(18.50515);
+	fxx.push_back(3.116256);
+	fxx.push_back(3.151762);
+	double **q=Hermite(xn, fx, fxx);
+	for (int i = 0; i < 2*(xn.size()-1) + 1; i++){
+		cout << "Q[" << i << "][" << i << "]:" << q[i][i] << endl;
+	}
+}
 int main(int argc,char** argv){
 	//testFixedIterator();
 	//testNewTonIterator();
 	//testSteffense();
 	//testHorner();
-	testNeville();
-	testdivideNewton();
+	//testNeville();
+	//testdivideNewton();
+	//testHermite();
+	testCubicSpline();
 }
