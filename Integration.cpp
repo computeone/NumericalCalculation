@@ -31,9 +31,6 @@ void testCompoundSimpson(){
 	double result = CompoundSimpson(0, 4, 10,functionCompoundSimpson);
 	cout << "积分值为:" << result << endl;
 }
-
-
-
 double** Romberg(double a, double b, int n,double(*function)(double)){
 	double** R = new double *[n];
 	for (int i = 0; i < n; i++){
@@ -71,7 +68,6 @@ void testRomberg(){
 double functionRomberg(double x){
 	return sin(x);
 }
-
 
 double AdaptiveIntegration(double a, double b, double tol, int N, double(*function)(double)){
 	double app = 0;
@@ -145,7 +141,120 @@ double AdaptiveIntegration(double a, double b, double tol, int N, double(*functi
 	return app;
 
 }
-
 void testAdaptiveIntegration(){
 	cout << "积分值：" << AdaptiveIntegration(0, 3.1415926, 0.0001, 5, functionRomberg);
 }
+
+double DoubleIntegration(double a, double b, double c, double d, int m, int n,
+	double(*function)(double, double)){
+	
+	double h = (b - a) / n;
+	double J1 = 0; //首选项
+	double J2 = 0;
+	double J3 = 0;
+
+	for (int i = 0; i < n+1; i++){
+		double x = a + i*h;
+		double HX = (d - c) / m;
+		double K1 = function(x, c) + function(x, d);
+		double K2 = 0;
+		double K3 = 0;
+
+		for (int j = 1; j < m; j++){
+			double y = c + j*HX;
+			double Q = function(x, y);
+			if (j % 2 == 0){
+				K2 = K2 + Q;
+			}
+			else{
+				K3 = K3 + Q;
+			}
+		}
+		double L = (K1 + 2 * K2 + 4 * K3)*HX / 3;
+		if (i == 0 || i == n){
+			J1 = J1 + L;
+		}
+		else if (i % 2 == 0){
+			J2 = J2 + L;
+		}
+		else{
+			J3 = J3 + L;
+		}
+		
+	}
+	double J = h*(J1 + 2 * J2 + 4 * J3) / 3;
+	return J;
+}
+double functionDoubleIntegration(double x, double y){
+	return log(x + 2 * y);
+}
+
+void testDoubleIntegration(){
+	double result = DoubleIntegration(1.4, 2.0, 1.0, 1.5, 4, 4, functionDoubleIntegration);
+	cout << "二重积分值：" << setprecision(16)<<result << endl;
+}
+
+//m为4,n为4
+double GaussDoubleIntegration(double a, double b, double c, double d,int m,int n,
+	double(*function)(double,double)){
+	double h1 = (b - a) / 2;
+	double h2 = (b + a) / 2;
+	double J = 0;
+
+	for (int i = 0; i < m ; i++){
+		double JX = 0;
+		double x = h1 * r4[i] + h2;
+		double d1 = d;
+		double c1 = c;
+		double k1 = (d1 - c1) / 2;
+		double k2 = (d1 + c1) / 2;
+
+		for (int j = 0; j < n; j++){
+			double y = k1 * r4[j] + k2;
+			double Q = function(x, y);
+			JX = JX + c4[j] * Q;
+		}
+		J = J + c4[i] * k1*JX;
+	}
+	J = h1*J;
+	return J;
+}
+void testGaussDoubleIntegration(){
+	double result = GaussDoubleIntegration(1.4, 2.0, 1.0, 1.5, 4,4,functionDoubleIntegration);
+	cout << "高斯二重积分求值：" << setprecision(16)<<result << endl;
+}
+double GaussTrebleIntegration(double a, double b, double c, double d, double e, double f,
+	int m, int n, int p, double(*function)(double, double, double)){
+
+	double h1 = (b - a) / 2;
+	double h2 = (b + a) / 2;
+	double J = 0;
+	for (int i = 0; i < m ; i++){
+		double JX = 0;
+		double x = h1 * r4[i] + h2;
+		double d1 = d;
+		double c1 = c;
+		double k1 = (d1 - c1) / 2;
+		double k2 = (d1 + c1) / 2;
+
+		for (int j = 0; j < n ; j++){
+			double JY = 0;
+			double y = k1 * r4[j] + k2;
+			double e1 = e;
+			double f1 = f;
+			double l1 = (f1 - e1) / 2;
+			double l2 = (f1 + e1) / 2;
+
+			for (int k = 0; k < p; k++){
+				double z = l1 * r4[k] + l2;
+				double Q = function(x, y, z);
+				JY = JY + c4[k] * Q;
+			}
+			JX = JX + c4[j] * JY;
+		}
+		J = J + c4[i] * k1*JX;
+	}
+	J = h1*J;
+	return J;
+}
+

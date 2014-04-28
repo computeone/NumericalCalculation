@@ -4,6 +4,7 @@
 #include "Steffensen.h"
 #include "Horner.h"
 #include "Interpolation.h"
+#include "Integration.h"
 #include <iostream>
 #include <algorithm>
 
@@ -62,7 +63,6 @@ void testNeville(){
 	fx.push_back(0.1103623);
 	cout << Neville(1.5, xn, fx)[4][4] << endl;
 }
-
 void testHermite(){
 	vector<double> xn;
 	vector<double> fx;
@@ -86,5 +86,9 @@ int main(int argc,char** argv){
 	//testNeville();
 	//testdivideNewton();
 	//testHermite();
-	testCubicSpline();
+	//testCubicSpline();
+	//testRomberg();
+	//testAdaptiveIntegration();
+	//testDoubleIntegration();
+	testGaussDoubleIntegration();
 }
