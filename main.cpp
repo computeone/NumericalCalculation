@@ -1,13 +1,6 @@
-#include "BinaryDivide.h"
-#include "FixedIterator.h"
-#include "NewTonIterator.h"
-#include "Steffensen.h"
-#include "Horner.h"
-#include "Interpolation.h"
-#include "Integration.h"
 #include <iostream>
 #include <algorithm>
-
+#include "main.h"
 using namespace std;
 
 double test(double p){
@@ -90,5 +83,9 @@ int main(int argc,char** argv){
 	//testRomberg();
 	//testAdaptiveIntegration();
 	//testDoubleIntegration();
-	testGaussDoubleIntegration();
+	//testGaussDoubleIntegration();
+	//testRunge_Kutta();
+	testRunge_Kutta_Fehlberg();
+	double a = 3.0 / 4 * 5;
+	cout << a << endl;
 }
