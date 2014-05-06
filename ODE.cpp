@@ -83,6 +83,146 @@ void Runge_Kutta_Fehlberg(double a, double b, double TOL, double w, double hmax,
 	}
 	cout << "算法成功!" << endl;
 }
+void Adams(double a, double b, int N,double w, double(*function)(double, double)){
+
+	double h = (b - a) / N;
+	double t = a;
+	double *tt = new double[4];
+	double *ww = new double[4];
+	tt[0] = t;
+	ww[0] = w;
+	cout << "t0:" << setprecision(10) << t << "  w0:" << setprecision(10) << w << endl;
+	/*
+	使用Runge-Kutta方法计算初始值
+	*/
+	for (int i = 1; i < 4; i++){
+		double K1 = h*function(tt[i-1], ww[i-1]);
+		double K2 = h*function(tt[i-1] + h / 2, ww[i-1] + K1 / 2);
+		double K3 = h*function(tt[i-1] + h / 2, ww[i-1] + K2 / 2);
+		double K4 = h*function(tt[i-1] + h, ww[i-1] + K3);
+
+		ww[i] = ww[i-1] + (K1 + 2 * K2 + 2 * K3 + K4) / 6;
+		
+		tt[i] = a + i*h;
+		cout << "t:" << setprecision(10) << tt[i] << " w:"
+			<< setprecision(10) << ww[i] << endl;
+	}
+
+	for (int i = 4; i < N + 1; i++){
+		t = a + i*h;
+		//预测wi
+		w = ww[3] + h*(55.0*function(tt[3], ww[3]) - 59 * function(tt[2], ww[2]) +
+			37 * function(tt[1], ww[1]) - 9 * function(tt[0], ww[0])) / 24.0;
+
+		//校正wi
+		w = ww[3] + h*(9 * function(t, w) + 19 * function(tt[3], ww[3]) - 5 * function(tt[2], ww[2])
+			+ function(tt[1], ww[1])) / 24.0;
+
+		cout << "t:" << setprecision(10) << t << " w:" << setprecision(10)
+			<< w << endl;
+		//准备下一次迭代
+		for (int j = 0; j < 3; j++){
+			tt[j] = tt[j + 1];
+			ww[j] = ww[j + 1];
+		}
+		tt[3] = t;
+		ww[3] = w;
+	}
+
+}
+
+void Extrapolation(double a, double b, double w, double TOL, double hmax, double hmin,
+	double(*function)(double, double)){
+	double NK[] = { 2,4, 6, 8, 12, 16, 24, 32 };
+	
+	double TO = a;
+	double WO = w;
+	double h = hmax;
+	bool FLAG = 1;
+	double *y = new double[8];
+	double **Q = new double*[8];
+	for (int i = 0; i < 8; i++){
+		Q[i] = new double[8];
+	}
+
+	for (int i = 1; i < 8; i++){
+		for (int j = 1; j < i; j++){
+			//Qij=hi^2/hi+1^2
+			Q[i][j] = powf(NK[i + 1] / NK[j],2);
+		}
+	}
+
+	while (FLAG == 1){
+		int k = 1;
+		bool NFLAG = 0;
+		while (k <= 8 && NFLAG == 0){
+			double HK = h / NK[k];
+			double T = TO;
+			double W2 = WO;
+			double W3 = W2 + HK*function(T, W2);//Euler法的第一步
+			T = TO + HK;
+
+			for (int j = 1; j < NK[k]; j++){
+				double W1 = W2;
+				W2 = W3;
+				W3 = W1 + 2 * HK*function(T, W3);//中点法
+				T = TO + (j + 1)*HK;
+			}
+
+			//计算yk,1的端点校正
+			double yk = (W3 + W2 + HK*function(T, W3)) / 2;
+			//yk-1=yk-1,1,yk-2=yk-1,2....y1=yk-1,k-1
+			if (k >= 2){
+				int j = k;
+				double v=y[k-1];
+				while (j >= 2){
+					/*
+					外推法计算(yj-1=yk,k-j+2, yj-1=(hj-1^2*yj-hk^2*yj-1)/(hj-1^2-hk^2)
+					*/
+					y[j-1]= (y[j]-y[j-1])/(Q[k-1][j-1]-1);
+
+					j = j - 1;  
+
+				}
+				if (fabsf(y[k-1]<v) < TOL){
+					//y1被接受作为新的w
+					NFLAG = 1;
+				}
+			}
+			k = k + 1;		
+		}
+
+		k = k - 1;
+		if (NFLAG == 0){
+			//结果被拒绝
+			h = h / 2;//w的新值被拒绝，减小h
+			if (h < hmin){
+				cout << "hmin exceeded!" << endl;
+			}
+			FLAG = 0;
+		}
+		//结果被接受
+		else{
+			WO = y[k-1];
+			TO = TO + h;
+			cout << "t:" << setprecision(10) << TO << "  w:" << setprecision(10) << WO
+				<< " h:" << setprecision(10) << h << endl;
+			if (TO >= b){
+				FLAG = 0;
+				cout << "算法成功完成！" << endl;
+			}
+			else if (TO + h > b){
+				h = b - TO;
+			}
+			else if (k <= 3 && h < 0.5*hmax){
+				h = 2 * h;
+			}
+
+		}
+	}
+
+
+}
 double Runge_Kutta_Function(double x, double y){
 	return y - powf(x, 2) + 1;
 }
@@ -98,4 +238,12 @@ void testRunge_Kutta(){
 
 void testRunge_Kutta_Fehlberg(){
 	Runge_Kutta_Fehlberg(0, 2, 0.00001, 0.5, 0.25, 0.01, Runge_Kutta_Function);
+}
+
+void testAdams(){
+	Adams(0, 2, 10, 0.5, Runge_Kutta_Function);
+}
+
+void testExtrapolation(){
+	Extrapolation(0, 2, 0.5, 0.00000001, 0.25, 0.01, Runge_Kutta_Function);
 }
