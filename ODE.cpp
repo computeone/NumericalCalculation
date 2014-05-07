@@ -223,6 +223,73 @@ void Extrapolation(double a, double b, double w, double TOL, double hmax, double
 
 
 }
+void Equations_Runge_Kutta(double a, double b, int m, int N, double *w0, 
+	double(**function)(double,double*)){
+
+	double h = (b - a) / N;
+	double t = a;
+	
+	double *k1 = new double[m];
+	double *k2 = new double[m];
+	double *k3 = new double[m];
+	double *k4 = new double[m];
+	double *w = new double[m];
+	double *w1 = new double[m];
+	double *w2 = new double[m];
+	double *w3 = new double[m];
+
+	for (int j = 0; j < m; j++){
+		w[j] = w0[j];
+	}
+	cout << "t:" << t;
+	for (int i = 0; i < m; i++){
+		cout << "  w" << i << ":" << w0[i];
+	}
+	cout << endl;
+	for (int i = 0; i < N; i++){
+
+		for (int j = 0; j < m; j++){
+			k1[j] = h*function[j](t, w);
+		}
+
+		for (int j = 0; j < m; j++){
+
+			for (int p = 0; p < m; p++){
+				w1[p] = w[p] + k1[p]/2;
+			}
+
+			k2[j] = h*function[j](t + h / 2,w1);
+		}
+
+		for (int j = 0; j < m; j++){
+			for (int p = 0; p < m; p++){
+				w2[p] = w[p] + k2[p] / 2;
+			}
+			k3[j] = h*function[j](t + h / 2, w2);
+		}
+
+		for (int j = 0; j < m; j++){
+
+			for (int p = 0; p < m; p++){
+				w3[p] = w[p] + k3[p];
+			}
+
+			k4[j] = h*function[j](t + h , w3);
+		}
+
+		for (int j = 0; j < m; j++){
+			w[j] = w[j] + (k1[j] + 2*k2[j] + 2*k3[j]+k4[j])/6;
+		}
+		
+		t = a + (i+1)*h;
+
+		cout << "t:" << t;
+		for (int i = 0; i < m; i++){
+			cout << "  w" << i << ":" << w[i];
+		}
+		cout << endl;
+	}
+}
 double Runge_Kutta_Function(double x, double y){
 	return y - powf(x, 2) + 1;
 }
@@ -246,4 +313,21 @@ void testAdams(){
 
 void testExtrapolation(){
 	Extrapolation(0, 2, 0.5, 0.00000001, 0.25, 0.01, Runge_Kutta_Function);
+}
+
+double function1(double t,double *a){
+	return a[1];
+}
+double function2(double t,double *a){
+	double result=exp(2 * t)*sin(t) - 2 * a[0] + 2 * a[1];
+	return result;
+}
+void testEquations_Runge_Kutta(){
+	double(*function[2])(double, double*);
+	function[0] = function1;
+	function[1] = function2;
+	double *w0 = new double[2];
+	w0[0] = -0.4;
+	w0[1] = -0.6;
+	Equations_Runge_Kutta(0,1,2,10,w0,function);
 }

@@ -34,3 +34,11 @@ void testAdams();
 void Extrapolation(double a, double b, double w, double TOL, double hmax,
 	double hmin, double(*function)(double, double));
 void testExtrapolation();
+
+/*
+微分方程组的Runge-Kutta算法
+*/
+
+void Equations_Runge_Kutta(double a, double b, int m, int N, double *w,
+	double(**function)(double...));
+void testEquations_Runge_Kutta();
