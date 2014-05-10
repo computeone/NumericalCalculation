@@ -8,3 +8,10 @@ using namespace std;
 
 double* GaussianElimination(double **A, int n, int k);
 void testGaussianElimination();
+
+/*
+LU∑÷Ω‚À„∑®
+*/
+
+void LU(int n, double **a);
+void testLU();

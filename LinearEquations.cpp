@@ -1,9 +1,10 @@
 #include <iostream>
+#include <iomanip>
 #include "LinearEquations.h"
 
 using namespace std;
 
-double* GaussianElimination(double **A, int n){
+double* GaussianElimination(double **A, int n)  {
 	double *x = new double[n-1];
 	int p = 0;
 	for (int i = 0; i < n-1; i++){
@@ -69,6 +70,94 @@ double* GaussianElimination(double **A, int n){
 	return x;
 }
 
+void LU(int n, double **a){
+	double **l = new double*[n];
+	double **u = new double*[n];
+
+	for (int i = 0; i < n; i++){
+		l[i] = new double[n];
+		u[i] = new double[n];
+		for (int j = 0; j < n; j++){
+			l[i][j] = 0;
+			u[i][j] = 0;
+		}
+	}
+	/*
+	设置lii为1
+	*/
+	for (int i = 0; i < n; i++){
+		l[i][i] = 1;
+	}
+
+	u[0][0] = a[0][0] / l[0][0];
+	if (u[0][0] == 0){
+		cout << "无法分解！" << endl;
+		return;
+	}
+
+	for (int j = 1; j < n; j++){
+		u[0][j] = a[0][j] / l[0][0];//U的第一行
+		l[j][0] = a[j][0] / u[0][0];//L的第一列
+	}
+
+	for (int i = 1; i < n - 1; i++){
+
+		double s = 0;
+		for (int k = 0; k < i; k++){
+			s = s + l[i][k] * u[k][i];
+		}
+		
+		u[i][i] = (a[i][i] - s) / l[i][i];
+		
+		if (u[i][i] == 0){
+			cout << "无法分解！" << endl;
+			return;
+		}
+
+		for (int j = i + 1; j < n; j++){
+			s = 0;
+			for (int k = 0; k < i; k++){
+				s = s + l[i][k] * u[k][j];
+			}
+
+			u[i][j] = (a[i][j] - s) / l[i][i];//U的第i行
+			s = 0;
+			for (int k = 0; k < i; k++){
+				s = s + l[j][k] * u[k][i];
+			}
+
+			l[j][i] = (a[j][i] - s) / u[i][i];//L的第i列
+		}
+
+	}
+
+	double s = 0;
+	for (int k = 0; k < n - 1; k++){
+		s = s + l[n - 1][k] * u[k][n - 1];
+	}
+	/*
+	如果lnnUnn=0，则A=LU，但A是奇异的
+	*/
+	u[n - 1][n - 1] = (a[n - 1][n - 1]-s)/l[n-1][n-1];
+
+	//打印输出结果
+	cout << "L矩阵：" << endl;
+	for (int i = 0; i < n; i++){
+
+		for (int j = 0; j < n; j++){
+			cout << setprecision(5)<<setiosflags(ios::showpoint)<<l[i][j] << "  ";
+		}
+		cout << endl;
+	}
+	cout << "U矩阵：" << endl;
+	for (int i = 0; i < n; i++){
+
+		for (int j = 0; j < n; j++){
+			cout << u[i][j] << "  ";
+		}
+		cout << endl;
+	}
+}
 void testGaussianElimination(){
 	double **a = new double*[5];
 	a[0] = new double[5];
@@ -109,4 +198,31 @@ void testGaussianElimination(){
 		cout << endl;
 	}
 	
+}
+void testLU(){
+	double **a = new double*[4];
+	for (int i = 0; i < 4; i++){
+		a[i] = new double[4];
+	}
+	a[0][0] = 1;
+	a[0][1] = 1;
+	a[0][2] = 0;
+	a[0][3] = 3;
+
+	a[1][0] = 2;
+	a[1][1] = 1;
+	a[1][2] = -1;
+	a[1][3] = 1;
+
+	a[2][0] = 3;
+	a[2][1] = -1;
+	a[2][2] = -1;
+	a[2][3] = 2;
+
+	a[3][0] = -1;
+	a[3][1] = 2;
+	a[3][2] = 3;
+	a[3][3] = -1;
+	LU(4, a);
+
 }
