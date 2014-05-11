@@ -70,6 +70,56 @@ double* GaussianElimination(double **A, int n)  {
 	return x;
 }
 
+double* GaussianPivotElimination(double **a, int n){
+	double *x = new double[n];
+	int *NROW = new int[n];
+	for (int i = 0; i < n; i++){
+		NROW[i] = i;
+	}
+	int p;
+	for (int i = 0; i < n-1; i++){
+		p = i;
+		for (int j = i; j < n; j++){
+			if (fabs(a[j][i])>fabs(a[p][i])){
+				p = j;
+			}
+		}
+
+		if (a[p][i]==0){
+			cout << "没有唯一解！" << endl;
+			return NULL;
+		}
+
+		if (NROW[i] != NROW[p]){
+			int NCOPY = NROW[i];
+			NROW[i] = NROW[p];
+			NROW[p] = NCOPY;
+		}
+		
+		for (int j = i + 1; j < n; j++){
+			double m = a[NROW[j]][i] / a[NROW[i]][i];
+			
+			for (int q = 0; q < n+1; q++){
+				a[NROW[j]][q] = a[NROW[j]][q] - m*a[NROW[i]][q];
+			}
+		}
+		if (a[NROW[n-1]][n-1] == 0){
+			cout << "没有唯一解！" << endl;
+		}
+
+		x[n - 1] = a[NROW[n - 1]][n] / a[NROW[n - 1]][n - 1];
+
+		for (int i = n - 2; i <=0; i++){
+			double s = 0;	
+			for (int j = i + 1; j < n; j++){
+				s = s + a[NROW[i]][j] * x[j];
+			}
+			
+			x[i] = (a[NROW[i]][n]-s)/a[NROW[i]][i];
+		}
+	}
+	return x;
+}
 void LU(int n, double **a){
 	double **l = new double*[n];
 	double **u = new double*[n];
@@ -225,4 +275,29 @@ void testLU(){
 	a[3][3] = -1;
 	LU(4, a);
 
+}
+void testGaussianPivotElimination(){
+	double **a = new double*[3];
+	for (int i = 0; i < 3; i++){
+		a[i] = new double[3];
+	}
+
+	a[0][0]=0.003000;
+	a[0][1]=59.14;
+	a[0][2]=59.17;
+
+	a[1][0] = 5.291;
+	a[1][1] = -6.130;
+	a[1][2] = 46.78;
+
+	double *x=GaussianPivotElimination(a, 2);
+	if (x == NULL){
+	}
+	else{
+		cout << "方程组的解：" << endl;
+		for (int i = 0; i < 2; i++){
+			cout << "x[" << i + 1 << "]:" << x[i] << "  ";
+		}
+		cout << endl;
+	}
 }
