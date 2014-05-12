@@ -103,20 +103,20 @@ double* GaussianPivotElimination(double **a, int n){
 				a[NROW[j]][q] = a[NROW[j]][q] - m*a[NROW[i]][q];
 			}
 		}
-		if (a[NROW[n-1]][n-1] == 0){
-			cout << "没有唯一解！" << endl;
+	}
+	if (a[NROW[n - 1]][n - 1] == 0){
+		cout << "没有唯一解！" << endl;
+	}
+
+	x[n - 1] = a[NROW[n - 1]][n] / a[NROW[n - 1]][n - 1];
+
+	for (int i = n - 2; i >= 0; i--){
+		double s = 0;
+		for (int j = i + 1; j < n; j++){
+			s = s + a[NROW[i]][j] * x[j];
 		}
 
-		x[n - 1] = a[NROW[n - 1]][n] / a[NROW[n - 1]][n - 1];
-
-		for (int i = n - 2; i <=0; i++){
-			double s = 0;	
-			for (int j = i + 1; j < n; j++){
-				s = s + a[NROW[i]][j] * x[j];
-			}
-			
-			x[i] = (a[NROW[i]][n]-s)/a[NROW[i]][i];
-		}
+		x[i] = (a[NROW[i]][n] - s) / a[NROW[i]][i];
 	}
 	return x;
 }
