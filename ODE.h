@@ -42,3 +42,11 @@ void testExtrapolation();
 void Equations_Runge_Kutta(double a, double b, int m, int N, double *w,
 	double(**function)(double...));
 void testEquations_Runge_Kutta();
+
+/*
+线性打靶法
+*/
+
+void LinearShootMethod(double a, double b, double r0, double r1, int N,
+	double(*function1)(double, double,double), double(*function2)(double, double, double));
+void testLinearShootMethod();

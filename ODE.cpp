@@ -293,6 +293,67 @@ void Equations_Runge_Kutta(double a, double b, int m, int N, double *w0,
 double Runge_Kutta_Function(double x, double y){
 	return y - powf(x, 2) + 1;
 }
+void LinearShootMethod(double a, double b, double r0, double r1, int N,
+	double(*function1)(double,double,double),double(*function2)(double,double,double)){
+	double h = (b - a) / N;
+	double *u1 = new double[N+1];
+	double *u2 = new double[N+1];
+	double *v1 = new double[N+1];
+	double *v2 = new double[N+1];
+	u1[0] = r0;
+	u2[0] = 0;
+	v1[0] = 0;
+	v2[0] = 1;
+	for (int i = 0; i < N; i++){
+		double x = a + i*h;
+		double k11 = h*u2[i];
+		double k12 = h*(function1(x,u2[i], u1[i]));
+
+		double k21 = h*(u2[i] + k12 / 2);
+		double k22 = h*(function1(x + h / 2, u2[i] + k12 / 2, u1[i] + k11 / 2));
+
+		double k31 = h*(u2[i] + k22 / 2);
+		double k32 = h*function1(x + h / 2, u2[i] + k22 / 2, u1[i] + k21 / 2);
+
+		double k41 = h*(u2[i] + k32);
+		double k42 = h*(function1(x + h , u2[i] + k32, u1[i] + k31));
+
+		u1[i+1] = u1[i] + (k11 + 2 * k21 + 2*k31 + k41) / 6;
+		u2[i+1] = u2[i] + (k12 + 2 * k22 + 2 * k32 + k42) / 6;
+
+		double kk11 = h*v2[i];
+		double kk12 = h*function2(x, v2[i], v1[i]);
+
+		double kk21 = h*(v2[i] + kk12 / 2);
+		double kk22 = h*function2(x + h / 2, v2[i] + kk12 / 2, v1[i] + kk11 / 2);
+
+		double kk31 = h*(v2[i] + kk22 / 2);
+		double kk32 = h*function2(x + h / 2, v2[i] + kk22 / 2, v1[i] + kk21 / 2);
+
+		double kk41 = h*(v2[i] + kk32);
+		double kk42 = h*function2(x + h, v2[i] + kk32, v1[i] + kk31);
+
+		v1[i+1] = v1[i] + (kk11 + 2 * kk21 + 2 * kk31 + kk41) / 6;
+		v2[i+1] = v2[i] + (kk12 + 2 * kk22 + 2 * kk32 + kk42) / 6;
+
+
+		
+	}
+
+	double w1 = r0;
+	double w2 = (r1 - u1[N]) / v1[N];
+
+	cout << "x1:" << a << "  w1:" << w1 << "  ww1:" << w2 << endl;
+	for (int i = 1; i < N+1; i++){
+		double W1 = u1[i] + w2*v1[i];
+		double W2 = u2[i] + w2*v2[i];
+		
+		double x = a + i*h;
+		cout << "x" << i + 1 << ":" <<x<< "  w" << i + 1 << ":" << W1 << "  ww" << i + 1 << ":" << W2 << endl;
+	}
+
+}
+
 void testRunge_Kutta(){
 	vector<pair<double, double>> result = Runge_Kutta(0, 2, 10, 0.5, Runge_Kutta_Function);
 	cout << "Runge_KuttaÖ´ÐÐ½á¹û:" << endl;
@@ -330,4 +391,13 @@ void testEquations_Runge_Kutta(){
 	w0[0] = -0.4;
 	w0[1] = -0.6;
 	Equations_Runge_Kutta(0,1,2,10,w0,function);
+}
+double LinearShootMethodFunction1(double a, double b, double c){
+	return -2.0 / a*b + 2.0 / pow(a, 2)*c + sin(log(a)) / pow(a, 2);
+}
+double LinearShootMethodFunction2(double a, double b, double c){
+	return -2.0 / a*b + 2.0 / pow(a, 2)*c;
+}
+void testLinearShootMethod(){
+	LinearShootMethod(1, 2, 1, 2, 10, LinearShootMethodFunction1, LinearShootMethodFunction2);
 }
