@@ -4,15 +4,17 @@
 using namespace std;
 
 
+
 /*
-Pade±Æ½ü¼¼Êõ
+Padeé€¼è¿‘æŠ€æœ¯
 */
 
 void Pade(int m, int n, double *a,double(*function)(double));
 void testPade();
 
+
 /*
-ChebyshevÓĞÀí±Æ½ü
+Chebyshevæœ‰ç†é€¼è¿‘
 */
 
 void Chebyshev(int m, int n, double *a,double(*function)(double));
