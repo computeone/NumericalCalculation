@@ -3,6 +3,7 @@
 
 using namespace std;
 
+
 /*
 Pade±Æ½ü¼¼Êõ
 */
